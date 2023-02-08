@@ -6,6 +6,7 @@
 #include "ThingSpeak.h"
 #include <Arduino.h>
 #include "Adafruit_SHT31.h"
+#include <SPI.h>
 
 // Insert your network credentials
 #define WIFI_SSID "Student"
@@ -46,9 +47,9 @@ float t, h;
 unsigned long lastMillis = 0;
 
 void loop() {
-
+  
   // Control how often we read temperature from ESP32S3 and if it reads temperature or not
-  if((millis() - lastMillis > 145000 || lastMillis == 0)){
+  if((millis() - lastMillis > 14500 || lastMillis == 0)){
     lastMillis = millis();
     t = sht31.readTemperature();
     h = sht31.readHumidity();
@@ -64,15 +65,23 @@ void loop() {
     } else { 
       Serial.println("Failed to read humidity");
     }
+
+    int x = ThingSpeak.writeField(myChannelNumber, 1, t, myWriteAPIKey);
+    if(x == 200){
+      Serial.println("Channel update successful.");
+    }
   }
+  delay(10);
+  /*
   char buffer[20];
   sprintf(buffer, "%.2f", t);
   if (millis() - lastMillis > 15000) {
     lastMillis = millis();
     Serial.printf("publishing\n");
-    int x = ThingSpeak.writeField(myChannelNumber, 1, buffer, myWriteAPIKey);
+    int x = ThingSpeak.writeField(myChannelNumber, 1, t, myWriteAPIKey);
     if(x == 200){
       Serial.println("Channel update successful.");
     }
   }
+  */
 }
