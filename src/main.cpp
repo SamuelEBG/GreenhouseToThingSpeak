@@ -9,10 +9,8 @@
 #include <SPI.h>
 
 // Insert your network credentials
-//#define WIFI_SSID "Student"
-//#define WIFI_PASSWORD "Kristiania1914"
-#define WIFI_SSID "MaxChillOutCrib"
-#define WIFI_PASSWORD "Ch1ll3rn!"
+#define WIFI_SSID "Student"
+#define WIFI_PASSWORD "Kristiania1914"
 
 Adafruit_SHT31 sht31 = Adafruit_SHT31();
 WiFiClient client;
@@ -183,8 +181,9 @@ void loop() {
     mqttPublish( channelID, (String(t)), String(tempField));
     mqttPublish( channelID, (String(h)), String(humField));
     */
-    float test = 23;
-    ThingSpeak.setField(1, test);
+    float testLow = 23;
+    float testHigh = 34;
+    ThingSpeak.setField(1, testHigh);
     ThingSpeak.setField(2, h);
     
     //int x = ThingSpeak.writeField(myChannelNumber, 1, t, myWriteAPIKey);
