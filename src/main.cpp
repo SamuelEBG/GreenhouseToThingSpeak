@@ -168,34 +168,31 @@ void loop() {
 
     if (! isnan(t)) {  // check if 'is not a number'
       Serial.println("Reading from ESP32S3"); 
-      Serial.print("temp *C = "); Serial.println(t);
+      Serial.print("Temperature C˚ = "); Serial.println(t);
     } else {
       Serial.println("Failed to read temperature");
     }
+
     //Humidity 
     if (! isnan(h)) {  // check if 'is not a number'
-      Serial.print("Hum. % = "); Serial.println(h);
+      Serial.print("Humidity % = "); Serial.println(h);
     } else { 
       Serial.println("Failed to read humidity");
     }
+
     /* MQTT - Publish temperature and humidity to respective field
     mqttPublish( channelID, (String(t)), String(tempField));
     mqttPublish( channelID, (String(h)), String(humField));
     */
     float testLow = 23;
     float testHigh = 34;
-    ThingSpeak.setField(1, testHigh);
+    ThingSpeak.setField(1, t);
     ThingSpeak.setField(2, h);
     
-    //int x = ThingSpeak.writeField(myChannelNumber, 1, t, myWriteAPIKey);
     int x = ThingSpeak.writeFields(myChannelNumber, myWriteAPIKey);
     if(x == 200){
       Serial.println("Channel update successful.");
+      Serial.println("");
     }
   }
-
-  /*
-  char buffer[20];
-  sprintf(buffer, "%.2f", t);
-  */
 }
