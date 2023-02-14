@@ -9,14 +9,13 @@
 #include <SPI.h>
 
 // Insert your network credentials
-#define WIFI_SSID "Student"
-#define WIFI_PASSWORD "Kristiania1914"
-//#define WIFI_SSID "MaxChillOutCrib"
-//#define WIFI_PASSWORD "Ch1ll3rn!"
+//#define WIFI_SSID "Student"
+//#define WIFI_PASSWORD "Kristiania1914"
+#define WIFI_SSID "MaxChillOutCrib"
+#define WIFI_PASSWORD "Ch1ll3rn!"
 
-// Ensure that the credentials here allow you to publish and subscribe to the ThingSpeak channel.
-//#define channelID 2026062
-#define channelID 2028068
+Adafruit_SHT31 sht31 = Adafruit_SHT31();
+WiFiClient client;
 
 /* MQTT - Credentials for connecting to ThingSpeak MQTT server.
 const char mqttUserName[] = "NDgiFBgfEDYQLS43DBsODzM"; 
@@ -69,11 +68,13 @@ int updateInterval = 15;
 PubSubClient mqttClient( client );
 */
 
-Adafruit_SHT31 sht31 = Adafruit_SHT31();
-WiFiClient client;
-unsigned long myChannelNumber = 3;
-const char * myWriteAPIKey = "66FH6QWIPM8DQ51P";
-const char * myWriteAPIKey3 = "UYW6AP5RBLZBDZ4C";
+// Ensure that the credentials here allow you to publish and subscribe to the ThingSpeak channel.
+#define channelID 2026062 // Channel 1
+//#define channelID 2028068 // Channel 2
+
+unsigned long myChannelNumber = 1;
+const char * myWriteAPIKey = "66FH6QWIPM8DQ51P"; // Channel 1
+//const char * myWriteAPIKey = "9FVC2TLC4AMF5ARC"; // Channel 2
 
 /* MQTT - Function for publishing to MQTT channel with payload.
 void mqttPublish(long pubChannelID, String message, String fieldNr) {
@@ -182,11 +183,12 @@ void loop() {
     mqttPublish( channelID, (String(t)), String(tempField));
     mqttPublish( channelID, (String(h)), String(humField));
     */
-
-    ThingSpeak.setField(1, t);
+    float test = 23;
+    ThingSpeak.setField(1, test);
     ThingSpeak.setField(2, h);
+    
     //int x = ThingSpeak.writeField(myChannelNumber, 1, t, myWriteAPIKey);
-    int x = ThingSpeak.writeFields(myChannelNumber, myWriteAPIKey3);
+    int x = ThingSpeak.writeFields(myChannelNumber, myWriteAPIKey);
     if(x == 200){
       Serial.println("Channel update successful.");
     }
